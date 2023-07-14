@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('account_id');
-            $table->unsignedDouble('amount');
+            $table->double('amount');
             $table->tinyInteger('type');
             $table->uuid();
             $table->timestamps();
