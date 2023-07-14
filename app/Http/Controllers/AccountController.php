@@ -29,7 +29,7 @@ class AccountController extends Controller
     public function store(StoreAccountRequest $request)
     {
         try {
-            DB::transaction(function () use ($request) {
+            $account =  DB::transaction(function () use ($request) {
                 $account = Account::create(
                     [
                         'user_id' => $request['user_id'],
@@ -43,9 +43,9 @@ class AccountController extends Controller
                     'uuid' => uuid_create(),
                     'balance' => AccountConstants::INITIAL_AMOUNT,
                 ]);
-
-                return response(["data" => $account]);
+                return $account;
             });
+            return response(["data" => $account]);
         } catch (\Exception $exception) {
             return $exception->getMessage();
         }
