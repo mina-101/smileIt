@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Constants\UserConstants;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -49,7 +50,18 @@ class User extends Authenticatable
     /**
      * @return HasMany
      */
-    function accounts(){
+    function accounts()
+    {
         return $this->hasMany(Account::class);
+    }
+
+    /**
+     * Check if user is admin
+     * @param User $user
+     * @return bool
+     */
+    function isAdmin()
+    {
+        return $this->role === UserConstants::ROLE_ADMIN;
     }
 }
