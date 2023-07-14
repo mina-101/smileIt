@@ -22,8 +22,8 @@ class DepositAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "source_account" => "required|exists:accounts,id|different:destination_account",
-            "destination_account" => "required|exists:accounts,id|different:source_account",
+            "source_account" => "required|exists:accounts,id,deleted_at,NULL|different:destination_account",
+            "destination_account" => "required|exists:accounts,id,deleted_at,NULL|different:source_account",
             "amount" => "required|numeric"
         ];
     }

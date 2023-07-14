@@ -22,7 +22,7 @@ class StoreAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id'
+            'user_id' => 'required|exists:users,id,deleted_at,NULL'
         ];
     }
 }
