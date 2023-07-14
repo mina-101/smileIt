@@ -75,14 +75,17 @@ class AccountController extends Controller
         $transactionUuid = uuid_create();
         try {
             DB::transaction(function () use ($sourceAccount, $destinationAccount, $request, $transactionUuid) {
+                $sourceAccountNewBalance = $sourceAccount->balance - $request->amount;
+                $destinationAccountNewBalance = $destinationAccount->balance + $request->amount;
                 Transaction::create([
                     'account_id' => $sourceAccount->id,
                     'amount' => -($request->amount),
                     'type' => TransactionConstants::TYPE_WITHDRAW,
                     'uuid' => $transactionUuid,
+                    'balance' => $sourceAccountNewBalance,
                 ]);
                 $sourceAccount->update([
-                    'balance' => ($sourceAccount->balance - $request->amount)
+                    'balance' => $sourceAccountNewBalance
                 ]);
 
                 Transaction::create([
@@ -90,16 +93,17 @@ class AccountController extends Controller
                     'amount' => $request->amount,
                     'type' => TransactionConstants::TYPE_DEPOSIT,
                     'uuid' => $transactionUuid,
+                    'balance' => $destinationAccountNewBalance,
                 ]);
                 $destinationAccount->update([
-                    'balance' => ($destinationAccount->balance + $request->amount)
+                    'balance' => $destinationAccountNewBalance
                 ]);
 
             });
 
             return response(["message" => "Operation was done successfully."]);
         } catch (\Exception $exception) {
-            throw new \Exception("ERROR! Transaction Failed");
+            throw new \Exception($exception->getMessage());
         }
     }
 
@@ -108,7 +112,8 @@ class AccountController extends Controller
      * @param Account $account
      * @return void
      */
-    public function history(Account $account){
+    public function history(Account $account)
+    {
         $transactions = $account->transactions;
 
         return response(["data" => $transactions]);

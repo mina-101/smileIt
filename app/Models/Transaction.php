@@ -13,7 +13,7 @@ class Transaction extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['account_id', 'amount', 'type', 'uuid'];
+    protected $fillable = ['account_id', 'amount', 'type', 'uuid', 'balance'];
 
     /**
      * Get account of a transaction
