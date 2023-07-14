@@ -28,14 +28,27 @@ class AccountController extends Controller
      */
     public function store(StoreAccountRequest $request)
     {
-        $account = Account::create(
-            [
-                'user_id' => $request['user_id'],
-                'balance' => AccountConstants::INITIAL_AMOUNT,
-            ]
-        );
+        try {
+            DB::transaction(function () use ($request) {
+                $account = Account::create(
+                    [
+                        'user_id' => $request['user_id'],
+                        'balance' => AccountConstants::INITIAL_AMOUNT,
+                    ]
+                );
+                Transaction::create([
+                    'account_id' => $account->id,
+                    'amount' => AccountConstants::INITIAL_AMOUNT,
+                    'type' => TransactionConstants::TYPE_DEPOSIT,
+                    'uuid' => uuid_create(),
+                    'balance' => AccountConstants::INITIAL_AMOUNT,
+                ]);
 
-        return response(["data" => $account]);
+                return response(["data" => $account]);
+            });
+        } catch (\Exception $exception) {
+            return $exception->getMessage();
+        }
     }
 
     /**
