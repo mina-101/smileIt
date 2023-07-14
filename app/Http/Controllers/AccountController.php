@@ -8,9 +8,8 @@ use App\Http\Requests\DepositAccountRequest;
 use App\Http\Requests\StoreAccountRequest;
 use App\Models\Account;
 use App\Models\Transaction;
-use http\Env\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class AccountController extends Controller
 {
@@ -19,7 +18,12 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $accounts = Account::all();
+        if (Auth::user()->isAdmin()) {
+            $accounts = Account::all();
+        } else {
+            $accounts = Auth::user()->accounts;
+        }
+
         return response(["data" => $accounts]);
     }
 
@@ -29,7 +33,7 @@ class AccountController extends Controller
     public function store(StoreAccountRequest $request)
     {
         try {
-            $account =  DB::transaction(function () use ($request) {
+            $account = DB::transaction(function () use ($request) {
                 $account = Account::create(
                     [
                         'user_id' => $request['user_id'],
@@ -56,15 +60,22 @@ class AccountController extends Controller
      */
     public function show(Account $account)
     {
+        if (Auth::user()->cannot('view', $account)) {
+            abort(403,"Forbidden");
+        }
+
         return response(["data" => $account]);
     }
-
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Account $account)
     {
+        if (Auth::user()->cannot('delete', $account)) {
+            abort(403,"Forbidden");
+        }
+
         $account->delete();
 
         return response(["data" => "Success"]);
@@ -127,6 +138,10 @@ class AccountController extends Controller
      */
     public function history(Account $account)
     {
+        if (Auth::user()->cannot('history', $account)) {
+            abort(403,"Forbidden");
+        }
+
         $transactions = $account->transactions;
 
         return response(["data" => $transactions]);
