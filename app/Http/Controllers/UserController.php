@@ -6,6 +6,7 @@ use App\Constants\UserConstants;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -14,6 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Auth::user());
+
         $users = User::all();
         return response(["data" => $users]);
     }
@@ -40,7 +43,8 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user ->update(
+        $this->authorize('update', Auth::user(), $user);
+        $user->update(
             [
                 "name" => $request['name'],
                 "email" => $request['email'],
@@ -55,6 +59,7 @@ class UserController extends Controller
      */
     public function createAdmin(StoreUserRequest $request)
     {
+        $this->authorize('createAdmin', Auth::user());
         $user = User::create(
             [
                 "name" => $request['name'],
@@ -72,6 +77,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $this->authorize('view', Auth::user(), $user);
         return response(["data" => $user]);
     }
 
@@ -81,6 +87,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('delete');
         $user->delete();
 
         return response(["data" => "Success"]);
