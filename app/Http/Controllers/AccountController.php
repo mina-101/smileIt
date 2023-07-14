@@ -10,6 +10,7 @@ use App\Models\Account;
 use App\Models\Transaction;
 use http\Env\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AccountController extends Controller
 {
@@ -100,5 +101,16 @@ class AccountController extends Controller
         } catch (\Exception $exception) {
             throw new \Exception("ERROR! Transaction Failed");
         }
+    }
+
+    /**
+     * show transfer history af an account
+     * @param Account $account
+     * @return void
+     */
+    public function history(Account $account){
+        $transactions = $account->transactions;
+
+        return response(["data" => $transactions]);
     }
 }

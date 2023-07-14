@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::name('accounts.')->prefix('accounts')->group(function () {
     Route::post('deposit', [AccountController::class, 'deposit'])->name('deposit');
+    Route::get('history/{account}', [AccountController::class, 'history'])->name('history');
 });
 Route::apiResource('accounts', AccountController::class)->except('update');
 Route::post('users/admin', [UserController::class, 'createAdmin'])->name('users.admin.store');
