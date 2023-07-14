@@ -20,7 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::apiResource('accounts', AccountController::class)->except('update');
-Route::post('users/admin',[ UserController::class, 'createAdmin'])->name('users.admin.store');
+Route::post('users/admin', [UserController::class, 'createAdmin'])->name('users.admin.store');
 Route::apiResource('users', UserController::class);
 

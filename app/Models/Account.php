@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Account extends Model
 {
@@ -19,5 +20,13 @@ class Account extends Model
      */
     function user() : BelongsTo{
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get all transaction of an account
+     * @return HasMany
+     */
+    function transactions(){
+        return $this->hasMany(Transaction::class);
     }
 }
