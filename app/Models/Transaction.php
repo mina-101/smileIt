@@ -27,12 +27,26 @@ class Transaction extends Model
     function type(): Attribute
     {
         return Attribute::make(
-            get: function (string $value){
-                if($value==TransactionConstants::TYPE_DEPOSIT)
+            get: function (string $value) {
+                if ($value == TransactionConstants::TYPE_DEPOSIT)
                     return "DEPOSIT";
 
                 return "WITHDRAW";
             }
+        );
+    }
+
+    protected function balance(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => number_format($value),
+        );
+    }
+
+    protected function amount(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => number_format($value),
         );
     }
 }
