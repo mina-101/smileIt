@@ -10,6 +10,7 @@ use App\Models\Account;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AccountController extends Controller
 {
@@ -149,5 +150,19 @@ class AccountController extends Controller
         $transactions = $account->transactions;
 
         return response(["data" => $transactions]);
+    }
+
+    /**
+     * show balance af an account
+     * @param Account $account
+     * @return void
+     */
+    public function balance(Account $account)
+    {
+        if (Auth::user()->cannot('balance', $account)) {
+            abort(403, "Forbidden");
+        }
+
+        return response(["data" => number_format($account->balance)]);
     }
 }

@@ -26,6 +26,14 @@ class AccountPolicy
     }
 
     /**
+     * Determine whether the user can view balance of an account.
+     */
+    public function balance(User $user, Account $account): bool
+    {
+        return $user->isAdmin() || $user->id == $account->user_id;
+    }
+
+    /**
      * Determine whether the user can deposit of an account.
      */
     public function deposit(User $user, Account $account): bool
