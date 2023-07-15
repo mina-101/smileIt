@@ -24,7 +24,7 @@ This project tries to create a sample api for transferring money between any two
 - Init application by editing .env file
 - If you have docker installed on your machine simply go to project root directory and run ./vendor/bin/sail up -d
 - Go to mysql container and create database
-- Go to laravel container and run php artisan migrate
+- Go to laravel container and run php artisan migrate:fresh --seed
 
 ## Usage
 - You can check out endpoints documentation **[Here](https://github.com/mina-101/smileIt/tree/dev/docs)**
