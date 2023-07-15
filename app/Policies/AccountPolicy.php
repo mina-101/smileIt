@@ -26,6 +26,14 @@ class AccountPolicy
     }
 
     /**
+     * Determine whether the user can deposit of an account.
+     */
+    public function deposit(User $user, Account $account): bool
+    {
+        return $user->isAdmin() || $user->id == $account->user_id;
+    }
+
+    /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user): bool

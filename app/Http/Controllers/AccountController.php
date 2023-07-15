@@ -61,7 +61,7 @@ class AccountController extends Controller
     public function show(Account $account)
     {
         if (Auth::user()->cannot('view', $account)) {
-            abort(403,"Forbidden");
+            abort(403, "Forbidden");
         }
 
         return response(["data" => $account]);
@@ -73,7 +73,7 @@ class AccountController extends Controller
     public function destroy(Account $account)
     {
         if (Auth::user()->cannot('delete', $account)) {
-            abort(403,"Forbidden");
+            abort(403, "Forbidden");
         }
 
         $account->delete();
@@ -90,6 +90,10 @@ class AccountController extends Controller
     {
         $sourceAccount = Account::find($request->source_account);
         $destinationAccount = Account::find($request->destination_account);
+
+        if (Auth::user()->cannot('deposit', $sourceAccount)) {
+            abort(403, "Forbidden");
+        }
 
         if ($sourceAccount->balance - $request->amount < AccountConstants::MIN_AMOUNT) {
 
@@ -139,7 +143,7 @@ class AccountController extends Controller
     public function history(Account $account)
     {
         if (Auth::user()->cannot('history', $account)) {
-            abort(403,"Forbidden");
+            abort(403, "Forbidden");
         }
 
         $transactions = $account->transactions;

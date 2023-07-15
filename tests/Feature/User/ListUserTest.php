@@ -11,16 +11,38 @@ class ListUserTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * A basic test example.
+     * @return void
      */
-    public function test_list_user_works_correctly(): void
+    public function test_admin_can_see_users_list(): void
     {
-        $user = User::factory()->count(10)->create();
-        $this->assertDatabaseCount('users', 10);
+        $this->actingAsAdmin();
+        $users = User::factory()->count(10)->create();
+        $this->assertDatabaseCount('users', 11);//+admin
         $response = $this->get(route('users.index'));
         $response->assertOk();
-        $this->assertCount(10 , $response['data']);
-        $response->assertJsonFragment(["name" => $user[3]['name']]);
-        $response->assertJsonFragment(["email" => $user[3]['email']]);
+        $this->assertCount(11, $response['data']);
+        $response->assertJsonFragment(["name" => $users[3]['name']]);
+        $response->assertJsonFragment(["email" => $users[3]['email']]);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_customer_cannot_see_users_list(): void
+    {
+        $this->actingAsCustomer();
+        User::factory()->count(10)->create();
+        $response = $this->get(route('users.index'));
+        $response->assertStatus(403);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_guest_cannot_see_users_list(): void
+    {
+        User::factory()->count(10)->create();
+        $response = $this->get(route('users.index'));
+        $response->assertStatus(302);
     }
 }

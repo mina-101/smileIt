@@ -16,7 +16,7 @@ use App\Http\Controllers\AuthController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -26,5 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::apiResource('accounts', AccountController::class)->except('update');
     Route::post('users/admin', [UserController::class, 'createAdmin'])->name('users.admin.store');
-    Route::apiResource('users', UserController::class);
+    Route::apiResource('users', UserController::class)->except('store');
 });
+
+Route::post('users', [UserController::class, 'store'])->name('users.store');

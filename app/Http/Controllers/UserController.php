@@ -77,7 +77,10 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $this->authorize('view', Auth::user(), $user);
+        if (Auth::user()->cannot('view', $user)) {
+            abort(403, "Forbidden");
+        }
+
         return response(["data" => $user]);
     }
 
@@ -87,7 +90,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->authorize('delete');
+        $this->authorize('delete', Auth::user());
         $user->delete();
 
         return response(["data" => "Success"]);
