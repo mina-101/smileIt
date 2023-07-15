@@ -3,10 +3,12 @@
 namespace Database\Factories;
 
 use App\Constants\AccountConstants;
-use App\Models\User;
+use App\Constants\TransactionConstants;
+use App\Models\Account;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class AccountFactory extends Factory
+
+class TransactionFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,7 +18,10 @@ class AccountFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
+            'account_id' => Account::factory(),
+            'amount' => rand(AccountConstants::INITIAL_AMOUNT, AccountConstants::INITIAL_AMOUNT * 2),
+            'type' => rand(TransactionConstants::TYPE_DEPOSIT, TransactionConstants::TYPE_WITHDRAW),
+            'uuid' => fake()->uuid,
             'balance' => rand(AccountConstants::INITIAL_AMOUNT, AccountConstants::INITIAL_AMOUNT * 2),
         ];
     }
