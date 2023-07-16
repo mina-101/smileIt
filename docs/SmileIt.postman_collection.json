@@ -249,7 +249,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"test\",\n    \"email\":\"test4@test.com\",\n    \"password\":\"123456\"\n}",
+							"raw": "{\n    \"name\":\"test\",\n    \"email\":\"adming@test.com\",\n    \"password\":\"123456\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -272,6 +272,43 @@
 				},
 				{
 					"name": "Get User By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"test5\",\n    \"email\":\"test4@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/api/users/1",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -283,7 +320,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"test5\",\n    \"email\":\"test4@test.com\"\n}",
+							"raw": "{\n    \"name\":\"test5\",\n    \"email\":\"test8@test.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -438,7 +475,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"user_id\":100\n}",
+							"raw": "{\n    \"user_id\":1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -759,6 +796,44 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Account Balance",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\":1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base}}/api/accounts/1/balance",
+							"host": [
+								"{{base}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"1",
+								"balance"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -807,7 +882,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "6|AZBSfQjXb4aDANS4BKmIgUkuxKJb25O1AWEYbzuA",
+				"value": "1|8LVsNKGy7ev9OkqfUBMFnVN4X5IyJPIpWZ5HDMHN",
 				"type": "string"
 			}
 		]
